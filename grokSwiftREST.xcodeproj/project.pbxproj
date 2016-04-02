@@ -15,6 +15,7 @@
 		CF666ED51CB020FD008214D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF666ED41CB020FD008214D0 /* Assets.xcassets */; };
 		CF666ED81CB020FD008214D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF666ED61CB020FD008214D0 /* LaunchScreen.storyboard */; };
 		CF666EE01CB02A39008214D0 /* GitHubAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF666EDF1CB02A39008214D0 /* GitHubAPIManager.swift */; };
+		CF666EE21CB02AAF008214D0 /* GistRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF666EE11CB02AAF008214D0 /* GistRouter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		CF666ED71CB020FD008214D0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CF666ED91CB020FD008214D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF666EDF1CB02A39008214D0 /* GitHubAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubAPIManager.swift; sourceTree = "<group>"; };
+		CF666EE11CB02AAF008214D0 /* GistRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GistRouter.swift; sourceTree = "<group>"; };
 		F23B78ED821C2F6DE6AE052B /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFE13B480F56CA2AC14A16C3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,6 +87,7 @@
 				CF666ECB1CB020FD008214D0 /* AppDelegate.swift */,
 				CF666ECD1CB020FD008214D0 /* MasterViewController.swift */,
 				CF666EDF1CB02A39008214D0 /* GitHubAPIManager.swift */,
+				CF666EE11CB02AAF008214D0 /* GistRouter.swift */,
 				CF666ECF1CB020FD008214D0 /* DetailViewController.swift */,
 				CF666ED11CB020FD008214D0 /* Main.storyboard */,
 				CF666ED41CB020FD008214D0 /* Assets.xcassets */,
@@ -219,6 +222,7 @@
 				CF666ED01CB020FD008214D0 /* DetailViewController.swift in Sources */,
 				CF666EE01CB02A39008214D0 /* GitHubAPIManager.swift in Sources */,
 				CF666ECE1CB020FD008214D0 /* MasterViewController.swift in Sources */,
+				CF666EE21CB02AAF008214D0 /* GistRouter.swift in Sources */,
 				CF666ECC1CB020FD008214D0 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
