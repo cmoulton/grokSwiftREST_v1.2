@@ -70,13 +70,13 @@ In this book we're going to deal with web services that return JSON. JSON hugely
 
 ## Versions
 
-This is version 1.1 of this book. It uses Swift 2.0, iOS 9, and Xcode 7. When we use libraries we'll explicitly list the versions used. The most commonly used ones are Alamofire 3.1 and SwiftyJSON 2.3.0.
+This is version 1.2 of this book. It uses Swift 2.2, iOS 9, and Xcode 7.3. When we use libraries we'll explicitly list the versions used. The most commonly used ones are Alamofire 3.3 and SwiftyJSON 2.3.
 
 [Version 1.0](https://github.com/cmoulton/grokSwiftREST) of this book used Alamofire 2.0 and SwiftyJSON 2.2.0.
 
 ## Source Code
 
-All sample code is available [on GitHub](https://github.com/cmoulton/grokSwiftREST_v1.1) under the [MIT license](https://github.com/cmoulton/grokSwiftREST_v1.1/blob/master/LICENSE). Links are provided throughout the text. Each chapter has a tag allowing you to check out the code in progress up to the end of that chapter.
+All sample code is available [on GitHub](https://github.com/cmoulton/grokSwiftREST_v1.2) under the [MIT license](https://github.com/cmoulton/grokSwiftREST_v1.2/blob/master/LICENSE). Links are provided throughout the text. Each chapter has a tag allowing you to check out the code in progress up to the end of that chapter.
 
 Individuals are welcome to use code for commercial and open-source projects. As a courtesy, please provide attribution to “Teak Mobile Inc.” or "Christina Moulton". For more information, review the complete Github license agreement.
 
