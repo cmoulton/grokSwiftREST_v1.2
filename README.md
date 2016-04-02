@@ -76,7 +76,7 @@ This is version 1.2 of this book. It uses Swift 2.2, iOS 9, and Xcode 7.3. When 
 
 ## Source Code
 
-All sample code is available [on GitHub](https://github.com/cmoulton/grokSwiftREST_v1.2) under the [MIT license](https://github.com/cmoulton/grokSwiftREST_v1.2/blob/master/LICENSE). Links are provided throughout the text. Each chapter has a tag allowing you to check out the code in progress up to the end of that chapter.
+All sample code is available [on GitHub](https://github.com/cmoulton/grokSwiftREST_v1.2) under the [MIT license](https://github.com/cmoulton/grokSwiftREST_v1.2/blob/master/LICENSE.txt). Links are provided throughout the text. Each chapter has a tag allowing you to check out the code in progress up to the end of that chapter.
 
 Individuals are welcome to use code for commercial and open-source projects. As a courtesy, please provide attribution to “Teak Mobile Inc.” or "Christina Moulton". For more information, review the complete Github license agreement.
 
