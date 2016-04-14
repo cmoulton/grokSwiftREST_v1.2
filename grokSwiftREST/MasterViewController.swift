@@ -96,14 +96,29 @@ class MasterViewController: UITableViewController {
     return gists.count
   }
 
-  override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  override func tableView(tableView: UITableView,
+                          cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-
+    
     let gist = gists[indexPath.row]
     cell.textLabel?.text = gist.description
     cell.detailTextLabel?.text = gist.ownerLogin
-    // TODO: set cell.imageView to display image at gist.ownerAvatarURL
-    
+    cell.imageView?.image = nil
+    if let urlString = gist.ownerAvatarURL {
+      GitHubAPIManager.sharedInstance.imageFromURLString(urlString) {
+        (image, error) in
+        guard error == nil else {
+          print(error!)
+          return
+        }
+        if let cellToUpdate = self.tableView?.cellForRowAtIndexPath(indexPath) {
+          cellToUpdate.imageView?.image = image // will work fine even if image is nil
+          // need to reload the view, which won't happen otherwise
+          // since this is in an async call
+          cellToUpdate.setNeedsLayout()
+        }
+      }
+    }
     return cell
   }
 

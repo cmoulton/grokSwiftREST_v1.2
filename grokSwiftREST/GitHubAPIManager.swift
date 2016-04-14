@@ -28,4 +28,19 @@ class GitHubAPIManager {
         completionHandler(response.result)
     }
   }
+  
+  func imageFromURLString(imageURLString: String, completionHandler:
+    (UIImage?, NSError?) -> Void) {
+    Alamofire.request(.GET, imageURLString)
+      .response { (request, response, data, error) in
+        // use the generic response serializer that returns NSData
+        guard let data = data else {
+          completionHandler(nil, nil)
+          return
+        }
+        
+        let image = UIImage(data: data as NSData)
+        completionHandler(image, nil)
+    }
+  }
 }
