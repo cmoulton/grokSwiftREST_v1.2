@@ -13,4 +13,12 @@ import SwiftyJSON
 class GitHubAPIManager {
   static let sharedInstance = GitHubAPIManager()
   
+  func printPublicGists() -> Void {
+    Alamofire.request(GistRouter.GetPublic())
+      .responseString { response in
+        if let receivedString = response.result.value {
+          print(receivedString)
+        }
+    }
+  }
 }
