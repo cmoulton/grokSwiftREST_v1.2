@@ -25,9 +25,10 @@ enum GistRouter: URLRequestConvertible {
     let url:NSURL = {
       // build up and return the URL for each endpoint
       let relativePath:String?
+      
       switch self {
-      case .GetPublic():
-        relativePath = "gists/public"
+        case .GetPublic():
+          relativePath = "gists/public"
       }
       
       var URL = NSURL(string: GistRouter.baseURLString)!
