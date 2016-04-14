@@ -11,5 +11,6 @@ import Alamofire
 import SwiftyJSON
 
 class GitHubAPIManager {
+  static let sharedInstance = GitHubAPIManager()
   
 }
