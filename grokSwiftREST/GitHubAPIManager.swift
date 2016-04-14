@@ -21,4 +21,11 @@ class GitHubAPIManager {
         }
     }
   }
+  
+  func fetchPublicGists(completionHandler: (Result<[Gist], NSError>) -> Void) {
+    Alamofire.request(GistRouter.GetPublic())
+      .responseArray { (response:Response<[Gist], NSError>) in
+        completionHandler(response.result)
+    }
+  }
 }
