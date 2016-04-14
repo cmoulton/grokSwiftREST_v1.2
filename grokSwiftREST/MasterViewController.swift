@@ -12,6 +12,7 @@ class MasterViewController: UITableViewController {
 
   var detailViewController: DetailViewController? = nil
   var gists = [Gist]()
+  var imageCache = [String: UIImage?]()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -105,17 +106,23 @@ class MasterViewController: UITableViewController {
     cell.detailTextLabel?.text = gist.ownerLogin
     cell.imageView?.image = nil
     if let urlString = gist.ownerAvatarURL {
-      GitHubAPIManager.sharedInstance.imageFromURLString(urlString) {
-        (image, error) in
-        guard error == nil else {
-          print(error!)
-          return
-        }
-        if let cellToUpdate = self.tableView?.cellForRowAtIndexPath(indexPath) {
-          cellToUpdate.imageView?.image = image // will work fine even if image is nil
-          // need to reload the view, which won't happen otherwise
-          // since this is in an async call
-          cellToUpdate.setNeedsLayout()
+      if let cachedImage = imageCache[urlString] {
+        cell.imageView?.image = cachedImage // will work fine even if image is nil
+      } else {
+        GitHubAPIManager.sharedInstance.imageFromURLString(urlString) {
+          (image, error) in
+          guard error == nil else {
+            print(error)
+            return
+          }
+          // Save the image so we won't have to keep fetching it if they scroll
+          self.imageCache[urlString] = image
+          if let cellToUpdate = self.tableView?.cellForRowAtIndexPath(indexPath) {
+            cellToUpdate.imageView?.image = image // will work fine even if image is nil
+            // need to reload the view, which won't happen otherwise
+            // since this is in an async call
+            cellToUpdate.setNeedsLayout()
+          }
         }
       }
     }
