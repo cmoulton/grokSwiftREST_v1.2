@@ -19,6 +19,7 @@
 		CFE6F4191CC031CC0031B95E /* Gist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE6F4181CC031CC0031B95E /* Gist.swift */; };
 		CFE6F41B1CC037F20031B95E /* ResponseJSONObjectSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE6F41A1CC037F20031B95E /* ResponseJSONObjectSerializable.swift */; };
 		CFE6F41D1CC0388A0031B95E /* AlamofireRequest+JSONSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE6F41C1CC0388A0031B95E /* AlamofireRequest+JSONSerializable.swift */; };
+		CFE6F41F1CC277600031B95E /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = CFE6F41E1CC277600031B95E /* placeholder.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		CFE6F4181CC031CC0031B95E /* Gist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gist.swift; sourceTree = "<group>"; };
 		CFE6F41A1CC037F20031B95E /* ResponseJSONObjectSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseJSONObjectSerializable.swift; sourceTree = "<group>"; };
 		CFE6F41C1CC0388A0031B95E /* AlamofireRequest+JSONSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AlamofireRequest+JSONSerializable.swift"; sourceTree = "<group>"; };
+		CFE6F41E1CC277600031B95E /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
 		F23B78ED821C2F6DE6AE052B /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFE13B480F56CA2AC14A16C3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -100,6 +102,7 @@
 				CFE6F41A1CC037F20031B95E /* ResponseJSONObjectSerializable.swift */,
 				CFE6F41C1CC0388A0031B95E /* AlamofireRequest+JSONSerializable.swift */,
 				CF666ED41CB020FD008214D0 /* Assets.xcassets */,
+				CFE6F41E1CC277600031B95E /* placeholder.png */,
 				CF666ED61CB020FD008214D0 /* LaunchScreen.storyboard */,
 				CF666ED91CB020FD008214D0 /* Info.plist */,
 			);
@@ -168,6 +171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CF666ED81CB020FD008214D0 /* LaunchScreen.storyboard in Resources */,
+				CFE6F41F1CC277600031B95E /* placeholder.png in Resources */,
 				CF666ED51CB020FD008214D0 /* Assets.xcassets in Resources */,
 				CF666ED31CB020FD008214D0 /* Main.storyboard in Resources */,
 			);

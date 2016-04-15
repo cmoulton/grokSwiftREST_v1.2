@@ -4,3 +4,4 @@ use_frameworks!
 
 pod 'Alamofire', '~> 3.3'
 pod 'SwiftyJSON', '~> 2.3'
+pod 'PINRemoteImage', '~> 2.1'
