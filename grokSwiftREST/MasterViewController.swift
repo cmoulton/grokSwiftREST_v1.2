@@ -13,6 +13,8 @@ class MasterViewController: UITableViewController {
 
   var detailViewController: DetailViewController? = nil
   var gists = [Gist]()
+  var nextPageURLString: String?
+  var isLoading = false
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -32,16 +34,29 @@ class MasterViewController: UITableViewController {
     super.viewWillAppear(animated)
   }
   
-  func loadGists() {
-    GitHubAPIManager.sharedInstance.fetchPublicGists() { result in
+  func loadGists(urlToLoad: String?) {
+    self.isLoading = true
+    GitHubAPIManager.sharedInstance.fetchPublicGists(urlToLoad) { (result, nextPage) in
+      self.isLoading = false
+      self.nextPageURLString = nextPage
+      
       guard result.error == nil else {
         self.handleLoadGistsError(result.error!)
         return
       }
       
-      if let fetchedGists = result.value {
-        self.gists = fetchedGists
+      guard let fetchedGists = result.value else {
+        print("no gists fetched")
+        return
       }
+      
+      if urlToLoad == nil {
+        // empty out the gists because we're not loading another page
+        self.gists = []
+      }
+      
+      self.gists += fetchedGists
+
       self.tableView.reloadData()
     }
   }
@@ -52,7 +67,7 @@ class MasterViewController: UITableViewController {
   
   override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
-    loadGists()
+    loadGists(nil)
   }
   
   override func didReceiveMemoryWarning() {
@@ -111,6 +126,19 @@ class MasterViewController: UITableViewController {
         UIImage(named: "placeholder.png"))
     } else {
       cell.imageView?.image = UIImage(named: "placeholder.png")
+    }
+    
+    // See if we need to load more gists
+    if !isLoading {
+      let rowsLoaded = gists.count
+      let rowsRemaining = rowsLoaded - indexPath.row
+      let rowsToLoadFromBottom = 5
+    
+      if rowsRemaining <= rowsToLoadFromBottom {
+        if let nextPage = nextPageURLString {
+          self.loadGists(nextPage)
+        }
+      }
     }
     
     return cell
