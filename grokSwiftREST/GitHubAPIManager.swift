@@ -27,6 +27,17 @@ class GitHubAPIManager {
     }
   }
   
+  func printMyStarredGistsWithBasicAuth() -> Void {
+    Alamofire.request(GistRouter.GetMyStarred())
+      .responseString { response in
+        guard let receivedString = response.result.value else {
+          print("didn't get a string in the response")
+          return
+        }
+        print(receivedString)
+    }
+  }
+  
   func fetchGists(urlRequest: URLRequestConvertible, completionHandler:
     (Result<[Gist], NSError>, String?) -> Void) {
     Alamofire.request(urlRequest)
