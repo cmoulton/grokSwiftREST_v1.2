@@ -31,6 +31,15 @@ class MasterViewController: UITableViewController {
 
   override func viewWillAppear(animated: Bool) {
     self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
+    
+    // add refresh control for pull to refresh
+    if (self.refreshControl == nil) {
+      self.refreshControl = UIRefreshControl()
+      self.refreshControl?.addTarget(self,
+                                     action: #selector(refresh(_:)),
+                                     forControlEvents: UIControlEvents.ValueChanged)
+    }
+    
     super.viewWillAppear(animated)
   }
   
@@ -39,6 +48,11 @@ class MasterViewController: UITableViewController {
     GitHubAPIManager.sharedInstance.fetchPublicGists(urlToLoad) { (result, nextPage) in
       self.isLoading = false
       self.nextPageURLString = nextPage
+      
+      // tell refresh control it can stop showing up now
+      if self.refreshControl != nil && self.refreshControl!.refreshing {
+        self.refreshControl?.endRefreshing()
+      }
       
       guard result.error == nil else {
         self.handleLoadGistsError(result.error!)
@@ -160,5 +174,11 @@ class MasterViewController: UITableViewController {
       // and add a new row to the table view.
     }
   }
-
+  
+  // MARK: - Pull to Refresh
+  func refresh(sender:AnyObject) {
+    nextPageURLString = nil // so it doesn't try to append the results
+    GitHubAPIManager.sharedInstance.clearCache()
+    loadGists(nil)
+  }
 }

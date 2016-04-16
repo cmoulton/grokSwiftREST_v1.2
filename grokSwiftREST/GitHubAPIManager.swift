@@ -13,6 +13,11 @@ import SwiftyJSON
 class GitHubAPIManager {
   static let sharedInstance = GitHubAPIManager()
   
+  func clearCache() -> Void {
+    let cache = NSURLCache.sharedURLCache()
+    cache.removeAllCachedResponses()
+  }
+  
   func printPublicGists() -> Void {
     Alamofire.request(GistRouter.GetPublic())
       .responseString { response in
