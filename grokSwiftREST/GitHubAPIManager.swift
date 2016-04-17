@@ -160,6 +160,7 @@ class GitHubAPIManager {
       .responseString { response in
         guard let receivedString = response.result.value else {
           print(response.result.error!)
+          self.OAuthToken = nil
           return
         }
         print(receivedString)
