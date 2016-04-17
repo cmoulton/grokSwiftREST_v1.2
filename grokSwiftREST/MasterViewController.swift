@@ -8,10 +8,15 @@
 
 import UIKit
 import PINRemoteImage
+import SafariServices
 
-class MasterViewController: UITableViewController, LoginViewDelegate {
+class MasterViewController: UITableViewController,
+  LoginViewDelegate,
+  SFSafariViewControllerDelegate {
 
   var detailViewController: DetailViewController? = nil
+  var safariViewController: SFSafariViewController?
+    
   var gists = [Gist]()
   var nextPageURLString: String?
   var isLoading = false
@@ -118,7 +123,12 @@ class MasterViewController: UITableViewController, LoginViewDelegate {
       guard let authURL = GitHubAPIManager.sharedInstance.URLToStartOAuth2Login() else {
         return
       }
-      // TODO: show web page
+      self.safariViewController = SFSafariViewController(URL: authURL)
+      self.safariViewController?.delegate = self
+      guard let webViewController = self.safariViewController else {
+        return
+      }
+      self.presentViewController(webViewController, animated: true, completion: nil)
     }
   }
   
