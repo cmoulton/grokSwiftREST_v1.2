@@ -9,13 +9,33 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import Locksmith
 
 class GitHubAPIManager {
   static let sharedInstance = GitHubAPIManager()
   let clientID: String = "1234567890"
   let clientSecret: String = "abcdefghijkl"
   var isLoadingOAuthToken: Bool = false
-  var OAuthToken: String?
+  
+  var OAuthToken: String? {
+    set {
+      guard let newValue = newValue else {
+        let _ = try? Locksmith.deleteDataForUserAccount("github")
+        return
+      }
+      
+      guard let _ = try? Locksmith.updateData(["token": newValue], forUserAccount: "github") else {
+        let _ = try? Locksmith.deleteDataForUserAccount("github")
+        return
+      }
+    }
+    get {
+      // try to load from keychain
+      Locksmith.loadDataForUserAccount("github")
+      let dictionary = Locksmith.loadDataForUserAccount("github")
+      return dictionary?["token"] as? String
+    }
+  }
   
   func clearCache() -> Void {
     let cache = NSURLCache.sharedURLCache()
