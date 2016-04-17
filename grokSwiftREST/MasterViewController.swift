@@ -102,6 +102,16 @@ class MasterViewController: UITableViewController {
     GitHubAPIManager.sharedInstance.printMyStarredGistsWithOAuth2()
   }
   
+  func showOAuthLoginView() {
+    let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+    guard let loginVC = storyboard.instantiateViewControllerWithIdentifier(
+      "LoginViewController") as? LoginViewController else {
+      assert(false, "Misnamed view controller")
+      return
+    }
+    self.presentViewController(loginVC, animated: true, completion: nil)
+  }
+  
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
