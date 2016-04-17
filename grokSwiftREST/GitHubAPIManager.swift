@@ -27,6 +27,31 @@ class GitHubAPIManager {
     }
   }
   
+  func hasOAuthToken() -> Bool {
+    // TODO: implement
+    return false
+  }
+  
+  // MARK: - OAuth flow
+  
+  func URLToStartOAuth2Login() -> NSURL? {
+    // TODO: implement
+    // TODO: get and print starred gists
+  }
+  
+  // MARK: - OAuth 2.0
+  func printMyStarredGistsWithOAuth2() -> Void {
+    Alamofire.request(GistRouter.GetMyStarred())
+      .responseString { response in
+        guard let receivedString = response.result.value else {
+          print(response.result.error!)
+          return
+        }
+        print(receivedString)
+    }
+  }
+  
+  // MARK: API Calls
   func fetchGists(urlRequest: URLRequestConvertible, completionHandler:
     (Result<[Gist], NSError>, String?) -> Void) {
     Alamofire.request(urlRequest)

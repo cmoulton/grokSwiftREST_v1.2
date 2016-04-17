@@ -6,4 +6,11 @@
 //  Copyright © 2016 Teak Mobile Inc. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+class LoginViewController: UIViewController {
+  
+  @IBAction func tappedLoginButton() {
+    // TODO: implement
+  }
+}
