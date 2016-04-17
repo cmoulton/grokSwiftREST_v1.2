@@ -12,6 +12,8 @@ import SwiftyJSON
 
 class GitHubAPIManager {
   static let sharedInstance = GitHubAPIManager()
+  let clientID: String = "1234567890"
+  let clientSecret: String = "abcdefghijkl"
   
   func clearCache() -> Void {
     let cache = NSURLCache.sharedURLCache()
@@ -35,8 +37,14 @@ class GitHubAPIManager {
   // MARK: - OAuth flow
   
   func URLToStartOAuth2Login() -> NSURL? {
-    // TODO: implement
-    // TODO: get and print starred gists
+    let authPath:String = "https://github.com/login/oauth/authorize" +
+      "?client_id=\(clientID)&scope=gist&state=TEST_STATE"
+    guard let authURL:NSURL = NSURL(string: authPath) else {
+      // TODO: handle error
+      return nil
+    }
+    
+    return authURL
   }
   
   // MARK: - OAuth 2.0
