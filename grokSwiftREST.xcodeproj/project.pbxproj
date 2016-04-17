@@ -20,6 +20,7 @@
 		CFE6F41B1CC037F20031B95E /* ResponseJSONObjectSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE6F41A1CC037F20031B95E /* ResponseJSONObjectSerializable.swift */; };
 		CFE6F41D1CC0388A0031B95E /* AlamofireRequest+JSONSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE6F41C1CC0388A0031B95E /* AlamofireRequest+JSONSerializable.swift */; };
 		CFE6F41F1CC277600031B95E /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = CFE6F41E1CC277600031B95E /* placeholder.png */; };
+		CFE6F4221CC3E3C70031B95E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE6F4211CC3E3C70031B95E /* LoginViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		CFE6F41A1CC037F20031B95E /* ResponseJSONObjectSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseJSONObjectSerializable.swift; sourceTree = "<group>"; };
 		CFE6F41C1CC0388A0031B95E /* AlamofireRequest+JSONSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AlamofireRequest+JSONSerializable.swift"; sourceTree = "<group>"; };
 		CFE6F41E1CC277600031B95E /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
+		CFE6F4211CC3E3C70031B95E /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		F23B78ED821C2F6DE6AE052B /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFE13B480F56CA2AC14A16C3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -94,10 +96,11 @@
 			children = (
 				CF666ECB1CB020FD008214D0 /* AppDelegate.swift */,
 				CF666ECD1CB020FD008214D0 /* MasterViewController.swift */,
+				CF666ECF1CB020FD008214D0 /* DetailViewController.swift */,
+				CFE6F4211CC3E3C70031B95E /* LoginViewController.swift */,
 				CF666EDF1CB02A39008214D0 /* GitHubAPIManager.swift */,
 				CF666EE11CB02AAF008214D0 /* GistRouter.swift */,
 				CFE6F4181CC031CC0031B95E /* Gist.swift */,
-				CF666ECF1CB020FD008214D0 /* DetailViewController.swift */,
 				CF666ED11CB020FD008214D0 /* Main.storyboard */,
 				CFE6F41A1CC037F20031B95E /* ResponseJSONObjectSerializable.swift */,
 				CFE6F41C1CC0388A0031B95E /* AlamofireRequest+JSONSerializable.swift */,
@@ -232,6 +235,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFE6F4221CC3E3C70031B95E /* LoginViewController.swift in Sources */,
 				CF666ED01CB020FD008214D0 /* DetailViewController.swift in Sources */,
 				CF666EE01CB02A39008214D0 /* GitHubAPIManager.swift in Sources */,
 				CFE6F41B1CC037F20031B95E /* ResponseJSONObjectSerializable.swift in Sources */,
