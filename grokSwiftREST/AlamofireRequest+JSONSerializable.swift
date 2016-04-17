@@ -33,6 +33,13 @@ extension Alamofire.Request {
         return .Failure(error)
       case .Success(let value):
         let json = SwiftyJSON.JSON(value)
+        // check for "message" errors in the JSON
+        if let errorMessage = json["message"].string {
+          let error = Error.errorWithCode(.DataSerializationFailed,
+            failureReason: errorMessage)
+          return .Failure(error)
+        }
+        
         guard let object = T(json: json) else {
           let failureReason = "Object could not be created from JSON."
           let error = Error.errorWithCode(.JSONSerializationFailed,
@@ -68,6 +75,13 @@ extension Alamofire.Request {
         return .Failure(error)
       case .Success(let value):
         let json = SwiftyJSON.JSON(value)
+        // check for "message" errors in the JSON
+        if let errorMessage = json["message"].string {
+          let error = Error.errorWithCode(.DataSerializationFailed,
+            failureReason: errorMessage)
+          return .Failure(error)
+        }
+        
         var objects: [T] = []
         for (_, item) in json {
           if let object = T(json: item) {
