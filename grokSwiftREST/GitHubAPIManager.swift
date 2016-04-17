@@ -156,7 +156,7 @@ class GitHubAPIManager {
   
   // MARK: - OAuth 2.0
   func printMyStarredGistsWithOAuth2() -> Void {
-    Alamofire.request(GistRouter.GetMyStarred())
+    let alamofireRequest = Alamofire.request(GistRouter.GetMyStarred())
       .responseString { response in
         guard let receivedString = response.result.value else {
           print(response.result.error!)
@@ -165,6 +165,7 @@ class GitHubAPIManager {
         }
         print(receivedString)
     }
+    debugPrint(alamofireRequest)
   }
   
   // MARK: API Calls
