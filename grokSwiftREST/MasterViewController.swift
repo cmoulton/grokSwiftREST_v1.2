@@ -112,6 +112,9 @@ class MasterViewController: UITableViewController,
         self.showOAuthLoginView()
         return
       }
+      if let _ = self.safariViewController {
+        self.dismissViewControllerAnimated(false) {}
+      }
       self.loadGists(nil)
     }
     
