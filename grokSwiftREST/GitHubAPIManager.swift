@@ -125,13 +125,11 @@ class GitHubAPIManager {
         guard response.result.error == nil,
           let receivedResults = response.result.value else {
             print(response.result.error!)
-            if let completionHandler = self.OAuthTokenCompletionHandler {
-              let error = NSError(domain: GitHubAPIManager.ErrorDomain, code: -1,
-                userInfo: [NSLocalizedDescriptionKey:
-                  "Could not obtain an OAuth token",
-                  NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
-              completionHandler(error)
-            }
+            self.OAuthTokenCompletionHandler?(NSError(domain: GitHubAPIManager.ErrorDomain,
+              code: -1,
+              userInfo: [NSLocalizedDescriptionKey:
+                "Could not obtain an OAuth token",
+                NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"]))
             self.isLoadingOAuthToken = false
             return
         }
@@ -140,13 +138,10 @@ class GitHubAPIManager {
         guard let jsonData = receivedResults.dataUsingEncoding(NSUTF8StringEncoding,
           allowLossyConversion: false) else {
             print("no data received or data not JSON")
-            if let completionHandler = self.OAuthTokenCompletionHandler {
-              let error = NSError(domain: GitHubAPIManager.ErrorDomain, code: -1,
-                userInfo: [NSLocalizedDescriptionKey:
-                  "Could not obtain an OAuth token",
-                  NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
-              completionHandler(error)
-            }
+            self.OAuthTokenCompletionHandler?(NSError(domain: GitHubAPIManager.ErrorDomain, code: -1,
+              userInfo: [NSLocalizedDescriptionKey:
+                "Could not obtain an OAuth token",
+                NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"]))
             self.isLoadingOAuthToken = false
             return
         }
@@ -154,16 +149,13 @@ class GitHubAPIManager {
         self.OAuthToken = self.parseOAuthTokenResponse(jsonResults)
         self.isLoadingOAuthToken = false
         
-        if let completionHandler = self.OAuthTokenCompletionHandler {
-          if (self.hasOAuthToken()) {
-            completionHandler(nil)
-          } else  {
-            let noOAuthError = NSError(domain: GitHubAPIManager.ErrorDomain,
-              code: -1, userInfo:
-              [NSLocalizedDescriptionKey: "Could not obtain an OAuth token",
-                NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
-            completionHandler(noOAuthError)
-          }
+        if (self.hasOAuthToken()) {
+          self.OAuthTokenCompletionHandler?(nil)
+        } else  {
+          self.OAuthTokenCompletionHandler?(NSError(domain: GitHubAPIManager.ErrorDomain,
+            code: -1, userInfo:
+            [NSLocalizedDescriptionKey: "Could not obtain an OAuth token",
+              NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"]))
         }
     }
   }
@@ -172,13 +164,10 @@ class GitHubAPIManager {
     // extract the code from the URL
     guard let code = extractCodeFromOAuthStep1Response(url) else {
       self.isLoadingOAuthToken = false
-      if let completionHandler = self.OAuthTokenCompletionHandler {
-        let error = NSError(domain: GitHubAPIManager.ErrorDomain, code: -1,
-                            userInfo: [NSLocalizedDescriptionKey:
-                              "Could not obtain an OAuth code",
-                              NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
-        completionHandler(error)
-      }
+      self.OAuthTokenCompletionHandler?(NSError(domain: GitHubAPIManager.ErrorDomain, code: -1,
+        userInfo: [NSLocalizedDescriptionKey:
+          "Could not obtain an OAuth code",
+          NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"]))
       return
     }
     
@@ -204,6 +193,11 @@ class GitHubAPIManager {
     (Result<[Gist], NSError>, String?) -> Void) {
     Alamofire.request(urlRequest)
       .responseArray { (response:Response<[Gist], NSError>) in
+        if let urlResponse = response.response,
+          authError = self.checkUnauthorized(urlResponse) {
+          completionHandler(.Failure(authError), nil)
+          return
+        }
         // need to figure out if this is the last page
         // check the link header, if present
         let next = self.parseNextPageFromHeaders(response.response)
@@ -277,6 +271,18 @@ class GitHubAPIManager {
       let endIndex = nextURL.endIndex.advancedBy(-2)
       let urlRange = startIndex..<endIndex
       return nextURL.substringWithRange(urlRange)
+    }
+    return nil
+  }
+  
+  func checkUnauthorized(urlResponse: NSHTTPURLResponse) -> (NSError?) {
+    if (urlResponse.statusCode == 401) {
+      self.OAuthToken = nil
+      let lostOAuthError = NSError(domain: NSURLErrorDomain,
+                                   code: NSURLErrorUserAuthenticationRequired,
+                                   userInfo: [NSLocalizedDescriptionKey: "Not Logged In",
+                                    NSLocalizedRecoverySuggestionErrorKey: "Please re-enter your GitHub credentials"])
+      return lostOAuthError
     }
     return nil
   }

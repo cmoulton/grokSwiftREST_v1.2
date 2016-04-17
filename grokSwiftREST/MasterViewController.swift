@@ -90,7 +90,14 @@ class MasterViewController: UITableViewController,
   }
   
   func handleLoadGistsError(error: NSError){
-    // TODO: show error
+    print(error)
+    self.nextPageURLString = nil
+    
+    self.isLoading = false
+    if error.domain == NSURLErrorDomain &&
+      error.code == NSURLErrorUserAuthenticationRequired {
+      self.showOAuthLoginView()
+    }
   }
   
   override func viewDidAppear(animated: Bool) {
@@ -140,13 +147,10 @@ class MasterViewController: UITableViewController,
   func didTapLoginButton() {
     self.dismissViewControllerAnimated(false) {
       guard let authURL = GitHubAPIManager.sharedInstance.URLToStartOAuth2Login() else {
-        if let completionHandler = GitHubAPIManager.sharedInstance.OAuthTokenCompletionHandler {
-          let error = NSError(domain: GitHubAPIManager.ErrorDomain, code: -1,
-                              userInfo: [NSLocalizedDescriptionKey:
-                                "Could not create an OAuth authorization URL",
-                                NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
-          completionHandler(error)
-        }
+        GitHubAPIManager.sharedInstance.OAuthTokenCompletionHandler?(NSError(domain: GitHubAPIManager.ErrorDomain, code: -1,
+          userInfo: [NSLocalizedDescriptionKey:
+            "Could not create an OAuth authorization URL",
+            NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"]))
         return
       }
       self.safariViewController = SFSafariViewController(URL: authURL)
