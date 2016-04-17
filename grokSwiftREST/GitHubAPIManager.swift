@@ -15,6 +15,7 @@ class GitHubAPIManager {
   let clientID: String = "1234567890"
   let clientSecret: String = "abcdefghijkl"
   var isLoadingOAuthToken: Bool = false
+  var OAuthToken: String?
   
   func clearCache() -> Void {
     let cache = NSURLCache.sharedURLCache()
@@ -31,7 +32,9 @@ class GitHubAPIManager {
   }
   
   func hasOAuthToken() -> Bool {
-    // TODO: implement
+    if let token = self.OAuthToken {
+      return !token.isEmpty
+    }
     return false
   }
   
@@ -46,6 +49,89 @@ class GitHubAPIManager {
     }
     
     return authURL
+  }
+  
+  func extractCodeFromOAuthStep1Response(url: NSURL) -> String? {
+    let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false)
+    var code:String?
+    guard let queryItems = components?.queryItems else {
+      return nil
+    }
+    for queryItem in queryItems {
+      if (queryItem.name.lowercaseString == "code") {
+        code = queryItem.value
+        break
+      }
+    }
+    return code
+  }
+  
+  func parseOAuthTokenResponse(json: JSON) -> String? {
+    var token: String?
+    for (key, value) in json {
+      switch key {
+      case "access_token":
+        token = value.string
+      case "scope":
+        // TODO: verify scope
+        print("SET SCOPE")
+      case "token_type":
+        // TODO: verify is bearer
+        print("CHECK IF BEARER")
+      default:
+        print("got more than I expected from the OAuth token exchange")
+        print(key)
+      }
+    }
+    return token
+  }
+  
+  func processOAuthStep1Response(url: NSURL) {
+    // extract the code from the URL
+    guard let code = extractCodeFromOAuthStep1Response(url) else {
+      self.isLoadingOAuthToken = false
+      return
+    }
+    
+    // swap the code for an oauth token
+    let getTokenPath:String = "https://github.com/login/oauth/access_token"
+    let tokenParams = ["client_id": clientID,
+                       "client_secret": clientSecret,
+                       "code": code]
+    let jsonHeader = ["Accept": "application/json"]
+    Alamofire.request(.POST, getTokenPath, parameters: tokenParams,
+      headers: jsonHeader)
+      .responseString { response in
+        // TODO: handle response to extract OAuth token
+        guard response.result.error == nil else {
+          print(response.result.error!)
+          self.isLoadingOAuthToken = false
+          return
+        }
+        guard let value = response.result.value else {
+          print("no string received in response when swapping oauth code for token")
+          self.isLoadingOAuthToken = false
+          return
+        }
+        print(value)
+        
+        // extract the token from the response
+        guard let receivedResults = response.result.value,
+          jsonData = receivedResults.dataUsingEncoding(NSUTF8StringEncoding,
+            allowLossyConversion: false) else {
+            print("no data received or data not JSON")
+            self.isLoadingOAuthToken = false
+            return
+        }
+        let jsonResults = JSON(data: jsonData)
+        self.OAuthToken = self.parseOAuthTokenResponse(jsonResults)
+        self.isLoadingOAuthToken = false
+        guard self.hasOAuthToken() else {
+          self.isLoadingOAuthToken = false
+          return
+        }
+        self.printMyStarredGistsWithOAuth2()
+      }
   }
   
   // MARK: - OAuth 2.0
