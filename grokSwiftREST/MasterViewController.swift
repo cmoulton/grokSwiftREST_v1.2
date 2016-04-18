@@ -9,6 +9,7 @@
 import UIKit
 import PINRemoteImage
 import SafariServices
+import Alamofire
 
 class MasterViewController: UITableViewController,
   LoginViewDelegate,
@@ -55,7 +56,7 @@ class MasterViewController: UITableViewController,
   
   func loadGists(urlToLoad: String?) {
     self.isLoading = true
-    GitHubAPIManager.sharedInstance.fetchMyStarredGists(urlToLoad) { (result, nextPage) in
+    let completionHandler: (Result<[Gist], NSError>, String?) -> Void = { (result, nextPage) in
       self.isLoading = false
       self.nextPageURLString = nextPage
       
@@ -85,8 +86,22 @@ class MasterViewController: UITableViewController,
       let now = NSDate()
       let updateString = "Last Updated at " + self.dateFormatter.stringFromDate(now)
       self.refreshControl?.attributedTitle = NSAttributedString(string: updateString)
-
+      
       self.tableView.reloadData()
+    }
+    
+    switch gistSegmentedControl.selectedSegmentIndex {
+      case 0:
+        GitHubAPIManager.sharedInstance.fetchPublicGists(urlToLoad, completionHandler:
+          completionHandler)
+      case 1:
+        GitHubAPIManager.sharedInstance.fetchMyStarredGists(urlToLoad, completionHandler:
+          completionHandler)
+      case 2:
+        GitHubAPIManager.sharedInstance.fetchMyGists(urlToLoad, completionHandler:
+          completionHandler)
+      default:
+        print("got an index that I didn't expect for selectedSegmentIndex")
     }
   }
   
@@ -272,6 +287,10 @@ class MasterViewController: UITableViewController,
   }
   
   @IBAction func segmentedControlValueChanged(sender: UISegmentedControl) {
-    
+    // clear out the table view
+    gists = []
+    tableView.reloadData()
+    // then load the new list of gists
+    loadGists(nil)
   }
 }
