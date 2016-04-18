@@ -13,6 +13,7 @@ import SafariServices
 class MasterViewController: UITableViewController,
   LoginViewDelegate,
   SFSafariViewControllerDelegate {
+  @IBOutlet weak var gistSegmentedControl: UISegmentedControl!
 
   var detailViewController: DetailViewController? = nil
   var safariViewController: SFSafariViewController?
@@ -268,5 +269,9 @@ class MasterViewController: UITableViewController,
     if (!didLoadSuccessfully) {
       controller.dismissViewControllerAnimated(true, completion: nil)
     }
+  }
+  
+  @IBAction func segmentedControlValueChanged(sender: UISegmentedControl) {
+    
   }
 }
