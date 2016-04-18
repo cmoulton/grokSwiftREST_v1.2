@@ -315,4 +315,28 @@ class GitHubAPIManager {
         completionHandler(.Success(true))
     }
   }
+  
+  func starGist(gistId: String, completionHandler: (NSError?) -> Void) {
+    Alamofire.request(GistRouter.Star(gistId))
+      .validate(statusCode: [204])
+      .response { (request, response, data, error) in
+        guard error == nil else {
+          print(error)
+          return
+        }
+        completionHandler(error)
+    }
+  }
+  
+  func unstarGist(gistId: String, completionHandler: (NSError?) -> Void) {
+    Alamofire.request(GistRouter.Unstar(gistId))
+      .validate(statusCode: [204])
+      .response { (request, response, data, error) in
+        guard error == nil else {
+          print(error)
+          return
+        }
+        completionHandler(error)
+    }
+  }
 }
