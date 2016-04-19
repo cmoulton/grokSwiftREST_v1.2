@@ -27,7 +27,6 @@ class MasterViewController: UITableViewController,
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
-    self.navigationItem.leftBarButtonItem = self.editButtonItem()
 
     let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(MasterViewController.insertNewObject(_:)))
     self.navigationItem.rightBarButtonItem = addButton
@@ -255,14 +254,41 @@ class MasterViewController: UITableViewController,
   override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath:
     NSIndexPath) -> Bool {
     // Return false if you do not want the specified item to be editable.
-    return false
+    return gistSegmentedControl.selectedSegmentIndex == 2
   }
   
   override func tableView(tableView: UITableView, commitEditingStyle editingStyle:
     UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     if editingStyle == .Delete {
+      let gistToDelete = gists[indexPath.row]
+      guard let idToDelete = gistToDelete.id else {
+        return
+      }
+      // remove from array of gists
       gists.removeAtIndex(indexPath.row)
+      // remove table view row
       tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+      
+      // delete from API
+      GitHubAPIManager.sharedInstance.deleteGist(idToDelete) {
+        (error) in
+        if let _ = error {
+          print(error)
+          // Put it back
+          self.gists.insert(gistToDelete, atIndex: indexPath.row)
+          tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Right)
+          // tell them it didn't work
+          let alertController = UIAlertController(title: "Could not delete gist",
+                                                  message: "Sorry, your gist couldn't be deleted. Maybe GitHub is "
+                                                    + "down or you don't have an internet connection.",
+                                                  preferredStyle: .Alert)
+          // add ok button
+          let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+          alertController.addAction(okAction)
+          // show the alert
+          self.presentViewController(alertController, animated:true, completion: nil)
+        }
+      }
     } else if editingStyle == .Insert {
       // Create a new instance of the appropriate class, insert it into the array,
       // and add a new row to the table view.
@@ -290,6 +316,14 @@ class MasterViewController: UITableViewController,
     // clear out the table view
     gists = []
     tableView.reloadData()
+    
+    // only show add button for my gists
+    if (gistSegmentedControl.selectedSegmentIndex == 2) {
+      self.navigationItem.leftBarButtonItem = self.editButtonItem()
+    } else {
+      self.navigationItem.leftBarButtonItem = nil
+    }
+    
     // then load the new list of gists
     loadGists(nil)
   }

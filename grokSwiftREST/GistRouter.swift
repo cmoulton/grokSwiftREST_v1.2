@@ -19,6 +19,7 @@ enum GistRouter: URLRequestConvertible {
   case GetAtPath(String) // GET at given path
   case Star(String) // PUT https://api.github.com/gists/\(gistId)/star
   case Unstar(String) // DELETE https://api.github.com/gists/\(gistId)/star
+  case Delete(String) // DELETE https://api.github.com/gists/\(gistId)
   
   var URLRequest: NSMutableURLRequest {
     var method: Alamofire.Method {
@@ -27,7 +28,7 @@ enum GistRouter: URLRequestConvertible {
           return .GET
         case .Star:
           return .PUT
-        case .Unstar:
+        case .Unstar, .Delete:
           return .DELETE
       }
     }
@@ -51,6 +52,8 @@ enum GistRouter: URLRequestConvertible {
           relativePath = "gists/\(id)/star"
         case .Unstar(let id):
           relativePath = "gists/\(id)/star"
+        case .Delete(let id):
+          relativePath = "gists/\(id)"
       }
       
       var URL = NSURL(string: GistRouter.baseURLString)!
@@ -62,7 +65,7 @@ enum GistRouter: URLRequestConvertible {
     
     let params: ([String: AnyObject]?) = {
       switch self {
-        case .GetPublic, .GetAtPath, .GetMyStarred, .GetMine, .IsStarred, .Star, .Unstar:
+        case .GetPublic, .GetAtPath, .GetMyStarred, .GetMine, .IsStarred, .Star, .Unstar, .Delete:
           return nil
       }
     }()

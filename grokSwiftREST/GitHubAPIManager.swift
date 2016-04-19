@@ -339,4 +339,16 @@ class GitHubAPIManager {
         completionHandler(error)
     }
   }
+  
+  func deleteGist(gistId: String, completionHandler: (NSError?) -> Void) {
+    Alamofire.request(GistRouter.Delete(gistId))
+      .response { (request, response, data, error) in
+        if let urlResponse = response, authError = self.checkUnauthorized(urlResponse) {
+          completionHandler(authError)
+          return
+        }
+        // error will be nil if the call succeeded
+        completionHandler(error)
+    }
+  }
 }
