@@ -231,7 +231,7 @@ class MasterViewController: UITableViewController,
     let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
     
     let gist = gists[indexPath.row]
-    cell.textLabel?.text = gist.description
+    cell.textLabel?.text = gist.gistDescription
     cell.detailTextLabel?.text = gist.ownerLogin
     
     // set cell.imageView to display image at gist.ownerAvatarURL
