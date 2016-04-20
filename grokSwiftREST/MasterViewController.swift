@@ -116,9 +116,9 @@ class MasterViewController: UITableViewController,
     }
     
     if error.code == NSURLErrorUserAuthenticationRequired {
-      self.showOAuthLoginView()
+      showOAuthLoginView()
     } else if error.code == NSURLErrorNotConnectedToInternet {
-      self.showNotConnectedBanner()
+      showNotConnectedBanner()
     }
   }
   

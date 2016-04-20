@@ -8,11 +8,13 @@
 
 import UIKit
 import SafariServices
+import BRYXBanner
 
 class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
   @IBOutlet weak var tableView: UITableView!
   var isStarred: Bool?
   var alertController: UIAlertController?
+  var notConnectedBanner: Banner?
   
   var gist: Gist? {
     didSet {
@@ -36,8 +38,9 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
       result in
       guard result.error == nil else {
         print(result.error)
-        if result.error?.domain == NSURLErrorDomain &&
-          result.error?.code == NSURLErrorUserAuthenticationRequired {
+        if result.error?.domain != NSURLErrorDomain {return}
+        
+        if result.error?.code == NSURLErrorUserAuthenticationRequired {
           self.alertController = UIAlertController(title:
             "Could not get starred status", message: result.error?.description,
                                             preferredStyle: .Alert)
@@ -46,6 +49,11 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
           self.alertController?.addAction(okAction)
           self.presentViewController(self.alertController!, animated:true,
                                      completion: nil)
+        } else if result.error?.code == NSURLErrorNotConnectedToInternet {
+          self.showOrangeNotConnectedBanner("No Internet Connection",
+                                            message: "Can not display starred status. " +
+            "Try again when you're connected to the internet")
+          
         }
         return
       }
@@ -191,6 +199,20 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         [NSIndexPath(forRow: 2, inSection: 0)],
         withRowAnimation: .Automatic)
     }
+  }
+  
+  func showOrangeNotConnectedBanner(title: String, message: String) {
+    // show not connected error & tell em to try again when they do have a connection
+    // check for existing banner
+    if let existingBanner = self.notConnectedBanner {
+      existingBanner.dismiss()
+    }
+    self.notConnectedBanner = Banner(title: title,
+      subtitle: message,
+      image: nil,
+      backgroundColor: UIColor.orangeColor())
+    self.notConnectedBanner?.dismissesOnSwipe = true
+    self.notConnectedBanner?.show(duration: nil)
   }
   
   override func didReceiveMemoryWarning() {
