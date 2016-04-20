@@ -10,15 +10,17 @@ import UIKit
 import PINRemoteImage
 import SafariServices
 import Alamofire
+import BRYXBanner
 
 class MasterViewController: UITableViewController,
   LoginViewDelegate,
   SFSafariViewControllerDelegate {
   @IBOutlet weak var gistSegmentedControl: UISegmentedControl!
 
+  var notConnectedBanner: Banner?
   var detailViewController: DetailViewController? = nil
   var safariViewController: SFSafariViewController?
-    
+
   var gists = [Gist]()
   var nextPageURLString: String?
   var isLoading = false
@@ -52,6 +54,7 @@ class MasterViewController: UITableViewController,
   }
   
   func loadGists(urlToLoad: String?) {
+    GitHubAPIManager.sharedInstance.clearCache()
     self.isLoading = true
     let completionHandler: (Result<[Gist], NSError>, String?) -> Void = { (result, nextPage) in
       self.isLoading = false
@@ -102,14 +105,20 @@ class MasterViewController: UITableViewController,
     }
   }
   
-  func handleLoadGistsError(error: NSError){
+  func handleLoadGistsError(error: NSError) {
     print(error)
-    self.nextPageURLString = nil
+    nextPageURLString = nil
     
-    self.isLoading = false
-    if error.domain == NSURLErrorDomain &&
-      error.code == NSURLErrorUserAuthenticationRequired {
+    isLoading = false
+    
+    if error.domain != NSURLErrorDomain {
+      return
+    }
+    
+    if error.code == NSURLErrorUserAuthenticationRequired {
       self.showOAuthLoginView()
+    } else if error.code == NSURLErrorNotConnectedToInternet {
+      self.showNotConnectedBanner()
     }
   }
   
@@ -179,7 +188,8 @@ class MasterViewController: UITableViewController,
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
   }
-
+  
+  // MARK: - Creation
   func insertNewObject(sender: AnyObject) {
     let createVC = CreateGistViewController(nibName: nil, bundle: nil)
     self.navigationController?.pushViewController(createVC, animated: true)
@@ -326,4 +336,20 @@ class MasterViewController: UITableViewController,
     // then load the new list of gists
     loadGists(nil)
   }
+  
+  func showNotConnectedBanner() {
+    // show not connected error & tell em to try again when they do have a connection
+    // check for existing banner
+    if let existingBanner = self.notConnectedBanner {
+      existingBanner.dismiss()
+    }
+    self.notConnectedBanner = Banner(title: "No Internet Connection",
+                                     subtitle: "Could not load gists." +
+      " Try again when you're connected to the internet",
+                                     image: nil,
+                                     backgroundColor: UIColor.redColor())
+    self.notConnectedBanner?.dismissesOnSwipe = true
+    self.notConnectedBanner?.show(duration: nil)
+  }
+  
 }
