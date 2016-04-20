@@ -136,9 +136,12 @@ class MasterViewController: UITableViewController,
       guard error == nil else {
         print(error)
         self.isLoading = false
-        // TODO: handle error
-        // Something went wrong, try again
-        self.showOAuthLoginView()
+        if error?.domain == NSURLErrorDomain && error?.code == NSURLErrorNotConnectedToInternet {
+          self.showNotConnectedBanner()
+        } else {
+          // Something went wrong, try again
+          self.showOAuthLoginView()
+        }
         return
       }
       if let _ = self.safariViewController {
@@ -313,6 +316,18 @@ class MasterViewController: UITableViewController,
     // Detect not being able to load the OAuth URL
     if (!didLoadSuccessfully) {
       controller.dismissViewControllerAnimated(true, completion: nil)
+      GitHubAPIManager.sharedInstance.isAPIOnline { isOnline in
+        if !isOnline {
+          print("error: api offline")
+          if let completionHandler = GitHubAPIManager.sharedInstance.OAuthTokenCompletionHandler {
+            let error = NSError(domain: NSURLErrorDomain, code:
+              NSURLErrorNotConnectedToInternet,
+              userInfo: [NSLocalizedDescriptionKey: "No Internet Connection or GitHub is Offline",
+              NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
+            completionHandler(error)
+          }
+        }
+      }
     }
   }
   

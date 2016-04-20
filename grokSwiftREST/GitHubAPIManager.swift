@@ -189,6 +189,19 @@ class GitHubAPIManager {
   }
   
   // MARK: API Calls
+  func isAPIOnline(completionHandler: Bool -> Void) {
+    Alamofire.request(.GET, GistRouter.baseURLString)
+      .validate(statusCode: 200 ..< 300)
+      .response { (request, response, data, error) in
+        guard error == nil else {
+          // no internet connection or GitHub API is down
+          completionHandler(false)
+          return
+        }
+        completionHandler(true)
+    }
+  }
+  
   func fetchGists(urlRequest: URLRequestConvertible, completionHandler:
     (Result<[Gist], NSError>, String?) -> Void) {
     Alamofire.request(urlRequest)
