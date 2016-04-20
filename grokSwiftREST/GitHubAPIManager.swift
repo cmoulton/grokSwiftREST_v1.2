@@ -18,7 +18,7 @@ class GitHubAPIManager {
   var isLoadingOAuthToken: Bool = false
   
   static let ErrorDomain = "com.error.GitHubAPIManager"
-  
+
   // handler for the OAuth process
   // stored as vars since sometimes it requires a round trip to safari which
   // makes it hard to just keep a reference to it
@@ -348,6 +348,7 @@ class GitHubAPIManager {
           return
         }
         // error will be nil if the call succeeded
+        self.clearCache()
         completionHandler(error)
     }
   }
@@ -385,6 +386,7 @@ class GitHubAPIManager {
           completionHandler(.Failure(error!))
           return
         }
+        self.clearCache()
         completionHandler(.Success(true))
     }
   }
