@@ -96,7 +96,9 @@ class MasterViewController: UITableViewController,
   override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
     
-    loadInitialData()
+    if (!GitHubAPIManager.sharedInstance.isLoadingOAuthToken) {
+      loadInitialData()
+    }
   }
   
   func loadInitialData() {
@@ -109,6 +111,7 @@ class MasterViewController: UITableViewController,
   
   func showOAuthLoginView() {
     let storyboard = UIStoryboard(name: "Main", bundle: NSBundle.mainBundle())
+    GitHubAPIManager.sharedInstance.isLoadingOAuthToken = true
     guard let loginVC = storyboard.instantiateViewControllerWithIdentifier(
       "LoginViewController") as? LoginViewController else {
       assert(false, "Misnamed view controller")
@@ -225,8 +228,18 @@ class MasterViewController: UITableViewController,
   
   // MARK: - Pull to Refresh
   func refresh(sender:AnyObject) {
+    GitHubAPIManager.sharedInstance.isLoadingOAuthToken = false
     nextPageURLString = nil // so it doesn't try to append the results
     GitHubAPIManager.sharedInstance.clearCache()
     loadGists(nil)
+  }
+  
+  // MARK: - Safari View Controller Delegate
+  func safariViewController(controller: SFSafariViewController, didCompleteInitialLoad
+    didLoadSuccessfully: Bool) {
+    // Detect not being able to load the OAuth URL
+    if (!didLoadSuccessfully) {
+      controller.dismissViewControllerAnimated(true, completion: nil)
+    }
   }
 }

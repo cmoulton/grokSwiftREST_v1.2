@@ -14,6 +14,7 @@ class GitHubAPIManager {
   static let sharedInstance = GitHubAPIManager()
   let clientID: String = "1234567890"
   let clientSecret: String = "abcdefghijkl"
+  var isLoadingOAuthToken: Bool = false
   
   func clearCache() -> Void {
     let cache = NSURLCache.sharedURLCache()
