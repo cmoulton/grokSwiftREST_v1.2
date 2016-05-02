@@ -17,7 +17,7 @@ class MasterViewController: UITableViewController,
   SFSafariViewControllerDelegate {
   @IBOutlet weak var gistSegmentedControl: UISegmentedControl!
 
-  var notConnectedBanner: Banner?
+  var errorBanner: Banner?
   var detailViewController: DetailViewController? = nil
   var safariViewController: SFSafariViewController?
 
@@ -82,6 +82,12 @@ class MasterViewController: UITableViewController,
       
       self.gists += fetchedGists
       
+      let path:Path = [.Public, .Starred, .MyGists][self.gistSegmentedControl.selectedSegmentIndex]
+      let success = PersistenceManager.saveArray(self.gists, path: path)
+      if !success {
+        self.showOfflineSaveFailedBanner()
+      }
+      
       // update "last updated" title for refresh control
       let now = NSDate()
       let updateString = "Last Updated at " + self.dateFormatter.stringFromDate(now)
@@ -118,6 +124,15 @@ class MasterViewController: UITableViewController,
     if error.code == NSURLErrorUserAuthenticationRequired {
       showOAuthLoginView()
     } else if error.code == NSURLErrorNotConnectedToInternet {
+      let path:Path = [.Public, .Starred, .MyGists][self.gistSegmentedControl.selectedSegmentIndex]
+      if let archived:[Gist] = PersistenceManager.loadArray(path) {
+        gists = archived
+      } else {
+        gists = [] // don't have any saved gists
+      }
+      tableView.reloadData()
+      
+
       showNotConnectedBanner()
     }
   }
@@ -319,13 +334,10 @@ class MasterViewController: UITableViewController,
       GitHubAPIManager.sharedInstance.isAPIOnline { isOnline in
         if !isOnline {
           print("error: api offline")
-          if let completionHandler = GitHubAPIManager.sharedInstance.OAuthTokenCompletionHandler {
-            let error = NSError(domain: NSURLErrorDomain, code:
+          GitHubAPIManager.sharedInstance.OAuthTokenCompletionHandler?(NSError(domain: NSURLErrorDomain, code:
               NSURLErrorNotConnectedToInternet,
               userInfo: [NSLocalizedDescriptionKey: "No Internet Connection or GitHub is Offline",
-              NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"])
-            completionHandler(error)
-          }
+              NSLocalizedRecoverySuggestionErrorKey: "Please retry your request"]))
         }
       }
     }
@@ -355,16 +367,29 @@ class MasterViewController: UITableViewController,
   func showNotConnectedBanner() {
     // show not connected error & tell em to try again when they do have a connection
     // check for existing banner
-    if let existingBanner = self.notConnectedBanner {
+    if let existingBanner = self.errorBanner {
       existingBanner.dismiss()
     }
-    self.notConnectedBanner = Banner(title: "No Internet Connection",
+    self.errorBanner = Banner(title: "No Internet Connection",
                                      subtitle: "Could not load gists." +
       " Try again when you're connected to the internet",
                                      image: nil,
                                      backgroundColor: UIColor.redColor())
-    self.notConnectedBanner?.dismissesOnSwipe = true
-    self.notConnectedBanner?.show(duration: nil)
+    self.errorBanner?.dismissesOnSwipe = true
+    self.errorBanner?.show(duration: nil)
+  }
+  
+  func showOfflineSaveFailedBanner() {
+    if let existingBanner = self.errorBanner {
+      existingBanner.dismiss()
+    }
+    self.errorBanner = Banner(title: "Could not save gists to view offline",
+                                     subtitle: "Your iOS device is almost out of free space.\n" +
+                                      "You will only be able to see your gists when you have an internet connection.",
+                                     image: nil,
+                                     backgroundColor: UIColor.orangeColor())
+    self.errorBanner?.dismissesOnSwipe = true
+    self.errorBanner?.show(duration: nil)
   }
   
 }
