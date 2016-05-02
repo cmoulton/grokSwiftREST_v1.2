@@ -9,7 +9,7 @@
 import UIKit
 import PINRemoteImage
 
-class MasterViewController: UITableViewController {
+class MasterViewController: UITableViewController, LoginViewDelegate {
 
   var detailViewController: DetailViewController? = nil
   var gists = [Gist]()
@@ -109,7 +109,17 @@ class MasterViewController: UITableViewController {
       assert(false, "Misnamed view controller")
       return
     }
+    loginVC.delegate = self
     self.presentViewController(loginVC, animated: true, completion: nil)
+  }
+  
+  func didTapLoginButton() {
+    self.dismissViewControllerAnimated(false) {
+      guard let authURL = GitHubAPIManager.sharedInstance.URLToStartOAuth2Login() else {
+        return
+      }
+      // TODO: show web page
+    }
   }
   
   override func didReceiveMemoryWarning() {
