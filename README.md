@@ -70,7 +70,7 @@ In this book we're going to deal with web services that return JSON. JSON hugely
 
 ## Versions
 
-This is version 1.2 of this book. It uses Swift 2.2, iOS 9, and Xcode 7.3. When we use libraries we'll explicitly list the versions used. The most commonly used ones are Alamofire 3.3 and SwiftyJSON 2.3.
+This is version 1.2 of this book. It uses Swift 2.3, iOS 9, and Xcode 7.3. When we use libraries we'll explicitly list the versions used. The most commonly used ones are Alamofire 3.3 and SwiftyJSON 2.3.
 
 [Version 1.0](https://github.com/cmoulton/grokSwiftREST) of this book used Alamofire 2.0 and SwiftyJSON 2.2.0.
 
