@@ -82,3 +82,16 @@ Individuals are welcome to use code for commercial and open-source projects. As 
 
 <a href="https://leanpub.com/iosappswithrest/">Buy now for $29</a>
 <p>or <a href="https://leanpub.com/iosappswithrest/">read the free sample chapters</a></p>
+
+## Quick Start
+
+- Go to [https://github.com/settings/developers](https://github.com/settings/developers)
+- Register a new GitHub app. Use the callback URL `grokgithuboauth://`
+- Get the client ID & secret
+- Copy those values into the top of GitHubAPIManager:
+ 
+<pre><code>let clientID: String = "1234567890"
+let clientSecret: String = "abcdefghijkl"
+</code></pre>
+
+- Enjoy!
