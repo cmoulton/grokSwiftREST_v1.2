@@ -16,6 +16,7 @@
 		CF666ED81CB020FD008214D0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CF666ED61CB020FD008214D0 /* LaunchScreen.storyboard */; };
 		CF666EE01CB02A39008214D0 /* GitHubAPIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF666EDF1CB02A39008214D0 /* GitHubAPIManager.swift */; };
 		CF666EE21CB02AAF008214D0 /* GistRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF666EE11CB02AAF008214D0 /* GistRouter.swift */; };
+		CFB1282A1CDD27000011CDC6 /* CreateGistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB128291CDD27000011CDC6 /* CreateGistViewController.swift */; };
 		CFE6F4191CC031CC0031B95E /* Gist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE6F4181CC031CC0031B95E /* Gist.swift */; };
 		CFE6F41B1CC037F20031B95E /* ResponseJSONObjectSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE6F41A1CC037F20031B95E /* ResponseJSONObjectSerializable.swift */; };
 		CFE6F41D1CC0388A0031B95E /* AlamofireRequest+JSONSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFE6F41C1CC0388A0031B95E /* AlamofireRequest+JSONSerializable.swift */; };
@@ -37,6 +38,7 @@
 		CF666ED91CB020FD008214D0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF666EDF1CB02A39008214D0 /* GitHubAPIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitHubAPIManager.swift; sourceTree = "<group>"; };
 		CF666EE11CB02AAF008214D0 /* GistRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GistRouter.swift; sourceTree = "<group>"; };
+		CFB128291CDD27000011CDC6 /* CreateGistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateGistViewController.swift; sourceTree = "<group>"; };
 		CFE6F4181CC031CC0031B95E /* Gist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gist.swift; sourceTree = "<group>"; };
 		CFE6F41A1CC037F20031B95E /* ResponseJSONObjectSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseJSONObjectSerializable.swift; sourceTree = "<group>"; };
 		CFE6F41C1CC0388A0031B95E /* AlamofireRequest+JSONSerializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AlamofireRequest+JSONSerializable.swift"; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				CF666ECD1CB020FD008214D0 /* MasterViewController.swift */,
 				CF666ECF1CB020FD008214D0 /* DetailViewController.swift */,
 				CFE6F4211CC3E3C70031B95E /* LoginViewController.swift */,
+				CFB128291CDD27000011CDC6 /* CreateGistViewController.swift */,
 				CF666EDF1CB02A39008214D0 /* GitHubAPIManager.swift */,
 				CF666EE11CB02AAF008214D0 /* GistRouter.swift */,
 				CFE6F4181CC031CC0031B95E /* Gist.swift */,
@@ -251,6 +254,7 @@
 				CF666ECE1CB020FD008214D0 /* MasterViewController.swift in Sources */,
 				CF666EE21CB02AAF008214D0 /* GistRouter.swift in Sources */,
 				CF666ECC1CB020FD008214D0 /* AppDelegate.swift in Sources */,
+				CFB1282A1CDD27000011CDC6 /* CreateGistViewController.swift in Sources */,
 				CFE6F41D1CC0388A0031B95E /* AlamofireRequest+JSONSerializable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
